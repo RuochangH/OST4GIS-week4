@@ -33,16 +33,25 @@
 ===================== */
 
 // Use the data source URL from lab 1 in this 'ajax' function:
-var downloadData = $.ajax("http://");
+var downloadData =$.ajax("https://raw.githubusercontent.com/CPLN-692-401/datasets/master/json/philadelphia-bike-crashes-snippet.json");
 
 // Write a function to prepare your data (clean it up, organize it as you like, create fields, etc)
-var parseData = function() {};
+var parseData = function(data) { var arrobj = JSON.parse(data); var formatted = [];
+  for (i =0; i<arrobj.length;i++) {
+    if (arrobj[i].CRASH_MONT != 1) {
+      dbarr = _.values(_.pick(arrobj[i],'lat_final','long_final','INJURY','CRASH_MONT'));
+  formatted.push(dbarr);}} return formatted;};
 
 // Write a function to use your parsed data to create a bunch of marker objects (don't plot them!)
-var makeMarkers = function() {};
+var makeMarkers = function(parsed) { var markers = [];
+  for (i = 0; i<parsed.length;i++){
+    marker = L.marker([parsed[i][0],parsed[i][1]]).bindPopup("Injury number is " + parsed[i][2]);
+  markers.push(marker);} return markers;};
 
 // Now we need a function that takes this collection of markers and puts them on the map
-var plotMarkers = function() {};
+var plotMarkers = function(markers) {
+  for (i = 0; i<markers.length; i++){
+    markers[i].addTo(map);}};
 
 // At this point you should see a bunch of markers on your map.
 // Don't continue on until you can make them appear!
@@ -61,7 +70,11 @@ var plotMarkers = function() {};
 ===================== */
 
 // Look to the bottom of this file and try to reason about what this function should look like
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  for (i=0; i<markers.length; i++) {
+    map.removeLayer(markers[i]);
+  }
+};
 
 /* =====================
   Optional, stretch goal
